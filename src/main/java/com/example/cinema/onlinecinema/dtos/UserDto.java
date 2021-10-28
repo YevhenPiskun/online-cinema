@@ -1,8 +1,13 @@
 package com.example.cinema.onlinecinema.dtos;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
+
 public class UserDto {
 
+    @Email(message = "Email should be valid")
     private String email;
+    @Size(min = 1, max = 200, message = "User's name must be between 1 and 100 characters")
     private String name;
     private Tariff tariff;
 

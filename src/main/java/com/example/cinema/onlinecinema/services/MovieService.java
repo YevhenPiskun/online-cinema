@@ -36,7 +36,7 @@ public class MovieService {
         if (optionalMovieDto.isPresent()) {
             return mapper.entityToDto(optionalMovieDto.get());
         } else {
-            throw new MovieNotFoundException("Movie Not Found");
+            throw new MovieNotFoundException(name + ": Movie Not Found");
         }
     }
 
@@ -49,7 +49,7 @@ public class MovieService {
         if (optionalMovie.isPresent()) {
             movieRepository.deleteMovieByName(name);
         } else {
-            throw new MovieNotFoundException("Movie Not Found");
+            throw new MovieNotFoundException(name + ": Movie Not Found");
         }
     }
 
@@ -59,13 +59,19 @@ public class MovieService {
             BeanUtils.copyProperties(movieDto, optionalExistingMovie.get(), "id");
             return movieRepository.save(optionalExistingMovie.get());
         } else {
-            throw new MovieNotFoundException("Movie Not Found");
+            throw new MovieNotFoundException(movieDto.getName() + ": Movie Not Found");
         }
     }
 
+//    public List<MovieDto> getMoviesByTariff(Tariff tariff) {
+//        return mapper.entitiesToDto(movieRepository.findAll()).stream()
+//                .filter(movieDto -> movieDto.getTariff().equals(tariff))
+//                .collect(Collectors.toList());
+//    }
+
     public List<MovieDto> getMoviesByTariff(Tariff tariff) {
         return mapper.entitiesToDto(movieRepository.findAll()).stream()
-                .filter(movieDto -> movieDto.getTariff().equals(tariff))
+                .filter(movieDto -> movieDto.getTariff().getPriority() >= tariff.getPriority())
                 .collect(Collectors.toList());
     }
 

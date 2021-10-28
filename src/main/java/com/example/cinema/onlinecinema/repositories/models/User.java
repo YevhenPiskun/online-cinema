@@ -9,8 +9,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Size;
 
 @Entity(name = "users")
 public class User {
@@ -19,9 +17,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(unique = true, nullable = false)
-    @Email(message = "Email should be valid")
     private String email;
-    @Size(min = 1, max = 200, message = "User's name must be between 1 and 100 characters")
     private String name;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
