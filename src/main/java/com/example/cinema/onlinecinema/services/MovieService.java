@@ -27,8 +27,7 @@ public class MovieService {
 
     public Movie addMovie(MovieDto movieDto) {
         Movie entity = mapper.dtoToEntity(movieDto);
-        movieRepository.save(entity);
-        return entity;
+        return movieRepository.save(entity);
     }
 
     public MovieDto getMovieByName(String name) {
@@ -62,12 +61,6 @@ public class MovieService {
             throw new MovieNotFoundException(movieDto.getName() + ": Movie Not Found");
         }
     }
-
-//    public List<MovieDto> getMoviesByTariff(Tariff tariff) {
-//        return mapper.entitiesToDto(movieRepository.findAll()).stream()
-//                .filter(movieDto -> movieDto.getTariff().equals(tariff))
-//                .collect(Collectors.toList());
-//    }
 
     public List<MovieDto> getMoviesByTariff(Tariff tariff) {
         return mapper.entitiesToDto(movieRepository.findAll()).stream()
