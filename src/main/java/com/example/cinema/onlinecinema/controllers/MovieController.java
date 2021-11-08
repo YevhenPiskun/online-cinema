@@ -7,7 +7,6 @@ import com.example.cinema.onlinecinema.repositories.models.Movie;
 import com.example.cinema.onlinecinema.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,12 +28,8 @@ public class MovieController {
     MovieService movieService;
 
     @GetMapping
-    public ResponseEntity<MovieDto> getMovieByName(String name) {
-        try {
-            return new ResponseEntity<>(movieService.getMovieByName(name), HttpStatus.OK);
-        } catch (MovieNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie Not Found");
-        }
+    public MovieDto getMovieByName(String name) {
+        return movieService.getMovieByName(name);
     }
 
     @GetMapping("/all")
@@ -54,7 +49,7 @@ public class MovieController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Movie addMovie(@RequestBody final MovieDto movieDto) {
+    public Movie addMovie(@Valid @RequestBody final MovieDto movieDto) {
         return movieService.addMovie(movieDto);
     }
 
@@ -66,11 +61,7 @@ public class MovieController {
     }
 
     @PutMapping
-    public ResponseEntity<Movie> updateMovie(@RequestBody final MovieDto movieDto) {
-        try {
-            return new ResponseEntity<>(movieService.updateMovie(movieDto), HttpStatus.OK);
-        } catch (MovieNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie Not Found");
-        }
+    public Movie updateMovie(@Valid @RequestBody final MovieDto movieDto) throws MovieNotFoundException {
+        return movieService.updateMovie(movieDto);
     }
 }

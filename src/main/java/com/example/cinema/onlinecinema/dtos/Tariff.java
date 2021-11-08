@@ -11,4 +11,8 @@ public enum Tariff {
     }
 
     private int priority;
+
+    public int getPriority() {
+        return priority;
+    }
 }

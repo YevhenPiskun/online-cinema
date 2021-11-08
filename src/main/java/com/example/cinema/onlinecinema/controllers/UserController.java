@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -36,7 +37,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User addUser(@RequestBody final UserDto userDto) {
+    public User addUser(@Valid @RequestBody final UserDto userDto) {
         return userService.addUser(userDto);
     }
 
@@ -48,7 +49,7 @@ public class UserController {
     }
 
     @PutMapping
-    public User updateUser(@RequestBody final UserDto userDto) {
+    public User updateUser(@Valid @RequestBody final UserDto userDto) {
         return userService.updateUser(userDto);
     }
 }

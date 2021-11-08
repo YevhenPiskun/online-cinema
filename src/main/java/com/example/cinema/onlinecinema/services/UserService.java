@@ -31,7 +31,7 @@ public class UserService {
         if (optionalUser.isPresent()) {
             return mapper.entityToDto(optionalUser.get());
         } else {
-            throw new UserNotFoundException("User Not Found");
+            throw new UserNotFoundException(email + ": User Not Found");
         }
     }
 
@@ -44,17 +44,17 @@ public class UserService {
         if (optionalUser.isPresent()) {
             userRepository.deleteUserByEmail(email);
         } else {
-            throw new UserNotFoundException("User Not Found");
+            throw new UserNotFoundException(email + ": User Not Found");
         }
     }
 
     public User updateUser(UserDto userDto) {
         Optional<User> optionalExistingUser = userRepository.getUserByEmail(userDto.getEmail());
         if (optionalExistingUser.isPresent()) {
-            BeanUtils.copyProperties(userDto, optionalExistingUser, "id");
+            BeanUtils.copyProperties(userDto, optionalExistingUser.get(), "id");
             return userRepository.save(optionalExistingUser.get());
         } else {
-            throw new UserNotFoundException("User Not Found");
+            throw new UserNotFoundException(userDto.getEmail() + ": User Not Found");
         }
     }
 }
